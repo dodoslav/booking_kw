@@ -1,5 +1,6 @@
+import datetime
 class RequestBuilder(object):
-    _date = ''
+    _date = '' # dd/mm/YYYY
     _from_place = ''
     _to_place = ''
     _oneway = False
@@ -7,8 +8,9 @@ class RequestBuilder(object):
     _fastest = False
     _bags = 1
     _return = 0
+    _version = 3
     
-    def __init__(self,date,from_place,to_place,oneway=False,cheapest=False,fastest=False,bags=1,return_days):
+    def __init__(self,date,from_place,to_place,return_days=0,oneway=False,cheapest=False,fastest=False,bags=1):
         self._date = date
         self._from_place = from_place
         self._to_place = to_place
@@ -19,7 +21,7 @@ class RequestBuilder(object):
         self._return=return_days
 
     def debug(self):
-        print("date: " + self._date)
+        print("date: " + self._date.strftime("%d/%m/%y"))
         print("from: " + self._from_place)
         print("to: " + self._to_place)
         print("oneway: " + str(self._oneway))
@@ -29,10 +31,19 @@ class RequestBuilder(object):
 
     def build(self):
         # https://api.skypicker.com/flights?v=3&daysInDestinationFrom=6&daysInDestinationTo=7&flyFrom=49.2-16.61-250km&to=dublin_ie&dateFrom=03/04/2018&dateTo=09/04/2018&typeFlight=return&adults=1&limit=60
-        
-
-
-        return "https://api.skypicker.com/flights?v=3&daysInDestinationFrom=6&daysInDestinationTo=7&flyFrom=49.2-16.61-250km&to=dublin_ie&dateFrom=03/04/2018&dateTo=09/04/2018&typeFlight=return&adults=1&limit=60"
+        parameters = []
+        parameters.append("v=" + str(self._version))
+        parameters.append("asc=" + str(int(self._cheapest)))
+        parameters.append("flyFrom=" + self._from_place)
+        parameters.append("to=" + self._to_place)
+        parameters.append("dateFrom="+ self._date.strftime("%d/%m/%Y") )
+        parameters.append("bags="+str(self._bags))
+        if not self._oneway:
+            ret = self._date + datetime.timedelta(days=int(self._return))
+            parameters.append("dateTo="+ ret.strftime("%d/%m/%Y"))
+        parameters.append("limit=1")
+        joined_parameters = '&'.join(parameters)
+        return "https://api.skypicker.com/flights?"+joined_parameters 
 
     @property
     def date(self):
