@@ -41,7 +41,7 @@ class RequestBuilder(object):
         if not self._oneway:
             ret = self._date + datetime.timedelta(days=int(self._return))
             parameters.append("dateTo="+ ret.strftime("%d/%m/%Y"))
-        parameters.append("limit=1")
+        parameters.append("limit=200")
         joined_parameters = '&'.join(parameters)
         return "https://api.skypicker.com/flights?"+joined_parameters 
 

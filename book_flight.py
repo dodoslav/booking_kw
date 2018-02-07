@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 import sys, getopt
-import json
 from request_builder import RequestBuilder
 from datetime import datetime
+from flight import FlightBuilder
+from book import Booking
 #
 # ./book_flight.py --date 2018-04-13 --from BCN --to DUB --one-way
 # ./book_flight.py --date 2018-04-13 --from LHR --to DXB --return 5
@@ -21,6 +22,7 @@ def main(argv):
     return_days = 0
  
     try:
+       #print argv = ['--date', '2018-04-13', '--from', 'BCN', '--to', 'DUB', '--return', '10', '--bags', '2']
        opts, args = getopt.getopt(argv,"hd:f:t:ocab:",["date=","from=","to=","one-way","cheapest","fastest","bags=","return="])
     except getopt.GetoptError:
        print 'test.py --date <date> --from <from_place> --to <to_place> --one-way --cheapest --fastest --bags <number> --return <days>'
@@ -49,9 +51,22 @@ def main(argv):
            return_days = arg
     
     req = RequestBuilder(date,from_place,to_place,return_days,oneway,cheapest,fastest,bags)      
-    req.debug()
-    print(req.build())
+    #req.debug()
+    flights = FlightBuilder(req.build()).build()
+    min_dur = 100000000
+    token = ''
+    for i,flight in enumerate(flights.data):
+        if flight.duration.total < min_dur:
+            min_dur = flight.duration.total
+            token = flight.booking_token 
+   # import pdb; pdb.set_trace() 
+    #print(flight)
+
+    b = Booking(token,bags)
+    b.do()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+else:
+    print("main(['--date', '2018-04-13', '--from', 'BCN', '--to', 'DUB', '--return', '10', '--bags', '2'])")
  
