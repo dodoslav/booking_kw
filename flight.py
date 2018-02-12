@@ -20,6 +20,9 @@ def json2obj(data):
     return json.loads(data, object_hook=_json_object_hook)
 
 class FlightBuilder(object):
+    """
+        Class for converting JSON data about all retrieven flights into python objects. 
+    """
     data = None 
 
     def __init__(self, url):

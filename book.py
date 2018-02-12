@@ -4,12 +4,13 @@ from json import loads
 from collections import OrderedDict
 
 class Booking(object):
+    """
+        Class for booking choosen flights. Request is done in JSON format with dummy data.
+    """
     url = "http://128.199.48.38:8080/booking"
     token = ''
     currency = ''
-    #passengers = '{"0":{ "email":["test@test.sk"], "firstName": ["Janko"], "documentID": ["123456"], "lastName": ["Hrasko"], "birthday": ["28/2/1990"], "title": ["Bgr"]}}'
     passengers = '{ "email":"test@test.sk", "firstName": "Janko", "documentID": "123456", "lastName": "Hrasko", "birthday": "1999-2-2", "title": "Mr"}'
-    #passengers = '{"0":{ "email":["Missing data for required field."], "firstName": ["Missing data for required field."], "documentID": ["Missing data for required field."],"lastName": ["Missing data for required field."], "birthday": ["Missing data for required field."], "title": ["Missing data for required field."]}}'
     def __init__(self,token,bags,currency="EUR"):
         self.token = token
         self.currency = currency
