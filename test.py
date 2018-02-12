@@ -37,11 +37,11 @@ class TestBooking(unittest.TestCase):
             ],
             [
                 ['--date', '2018-04-13', '--from', 'BCN', '--to', 'DUB', '--fastest'],
-                "asc=1&flyFrom=BCN&to=DUB&dateFrom=13/04/2018&bags=1&dateTo=13/04/2018&limit=200"
+                "asc=0&flyFrom=BCN&to=DUB&dateFrom=13/04/2018&bags=1&limit=200"
             ],
             [
                 ['--date', '2018-04-13', '--from', 'BCN', '--to', 'DUB', '--cheapest'],
-                "asc=1&flyFrom=BCN&to=DUB&dateFrom=13/04/2018&bags=1&dateTo=13/04/2018&limit=200"
+                "asc=1&flyFrom=BCN&to=DUB&dateFrom=13/04/2018&bags=1&limit=200"
             ]
         ]
             

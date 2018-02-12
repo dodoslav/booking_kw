@@ -48,12 +48,14 @@ class FlightParams(object):
                self._oneway = True
            elif opt in ("--fastest"):
                self._fastest = True
+               self._cheapest = False
            elif opt in ("--cheapest"):
                self._cheapest = True
            elif opt in ("--bags"):
                self._bags = arg
            elif opt in ("--return"):
                self._return_days = arg
+               self._oneway = False
     
     @property
     def date(self):
@@ -119,10 +121,17 @@ class BookFlight(object):
             return 0
         min_dur = 100000000
         token = ''
-        for i,flight in enumerate(self.flights.data):
-            if flight.duration.total < min_dur:
-                min_dur = flight.duration.total
-                token = flight.booking_token 
+        if self.params.fastest:
+            for i,flight in enumerate(self.flights.data):
+                if flight.duration.total < min_dur:
+                    min_dur = flight.duration.total
+                    token = flight.booking_token 
+        elif self.params.cheapest:
+            flight = self.flights.data[0] # because we are requesting in ascending order
+            token = flight.booking_token 
+        else:
+            print("Neither fastest nor cheapest!")
+            token = ""  
 
         b = Booking(token,self.params.bags)
         self.token = b.do()

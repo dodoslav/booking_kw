@@ -27,7 +27,7 @@ class FlightBuilder(object):
 
     def __init__(self, url):
         self.data = requests.get(url).json()
-
+    
     def build(self):
         return json2obj(json.dumps(self.data))     
         
